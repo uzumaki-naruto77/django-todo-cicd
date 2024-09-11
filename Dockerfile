@@ -2,6 +2,8 @@ FROM python:3
 
 WORKDIR /app
 
+RUN pip install setuptools
+
 RUN pip install django==3.2
 
 COPY . .
