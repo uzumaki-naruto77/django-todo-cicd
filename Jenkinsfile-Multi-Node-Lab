@@ -42,8 +42,9 @@ pipeline {
             agent {label 'prd-agent'}
             steps {
                 echo "Deploying the container on dev server"
-                sh "docker-compose down && docker-compose up -d"
-                
+                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                sh "docker-compose down && docker image rm ${env.dockerHubUser}/django-todo-app:v1 && docker-compose up -d"
+                }
             }
         }
     }
