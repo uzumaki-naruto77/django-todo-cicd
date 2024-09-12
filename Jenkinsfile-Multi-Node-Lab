@@ -1,0 +1,52 @@
+pipeline {
+    agent {label 'dev-agent'}
+    stages{
+        stage("Check which user is running this Job"){
+            steps{
+                sh 'whoami'
+            }
+        }
+        stage("Clone Code to Dev-Agent"){
+            steps {
+                echo "Cloning the code"
+                git url:"https://github.com/ABHAY4321/django-todo-cicd.git", branch: "develop"
+            }
+        }
+        stage("Build"){
+            steps {
+                echo "Building the image"
+                sh "docker build -t django-todo-app:v1 ."
+            }
+        }
+        stage("Push to Docker Hub"){
+            steps {
+                echo "Pushing the image to docker hub"
+                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                sh "docker tag django-todo-app:v1 ${env.dockerHubUser}/django-todo-app:v1"
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                sh "docker push ${env.dockerHubUser}/django-todo-app:v1"
+                sh "docker image rm django-todo-app:v1"
+                sh "docker image rm ${env.dockerHubUser}/django-todo-app:v1"
+                }
+            }
+        }
+        stage("Clone Code to Prd-Agent"){
+            agent {label 'prd-agent'}
+            steps {
+                sh 'whoami'
+                echo "Cloning the code"
+                git url:"https://github.com/ABHAY4321/django-todo-cicd.git", branch: "develop"
+            }
+        }
+        stage("Deploy"){
+            agent {label 'prd-agent'}
+            steps {
+                echo "Deploying the container on dev server"
+                sh "docker-compose down && docker-compose up -d"
+                
+            }
+        }
+    }
+}
+
+## Here 'dev-agent' is that node where we will perform building an image & push it to docker hub. 'prd-agent' is that node where we will pull that image from docker hub & run that container.
