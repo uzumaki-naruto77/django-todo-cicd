@@ -2,6 +2,11 @@ pipeline {
     agent {label 'dev-agent'} 
     
     stages{
+        stage("Check which user is running this Job"){
+            steps{
+                sh 'whoami'
+            }
+        }
         stage("Clone Code"){
             steps {
                 echo "Cloning the code"
