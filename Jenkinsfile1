@@ -42,3 +42,4 @@ pipeline {
 }
 ## Note: This will build image on "dev-agent", push it to Docker Hub, delete the built as well as tagged image from "dev-agent" and at last pull image from Docker Hub and run the container using that image.
 ## Note: This job will get executed by 'abhay' user as we already added credential for this user in jenkins global credential configuration to connect using private-public key pair of 'abhay' user.
+## Note: In this case, job is getting executed on 'dev-agent'. Hence we don't need to install docker, docker-compose on 'Jenkins Server'. We need to install it on 'dev-agent' only & add user 'abhay' to 'docker' group.
