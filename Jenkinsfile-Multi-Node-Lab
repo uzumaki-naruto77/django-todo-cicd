@@ -49,5 +49,6 @@ pipeline {
         }
     }
 }
-
-## Here 'dev-agent' is that node where we will perform building an image & push it to docker hub. 'prd-agent' is that node where we will pull that image from docker hub & run that container.
+/*
+Here 'dev-agent' is that node where we will perform building an image & push it to docker hub. 'prd-agent' is that node where we will pull that image from docker hub & run that container.
+*/
