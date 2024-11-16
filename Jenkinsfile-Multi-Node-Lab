@@ -22,9 +22,9 @@ pipeline {
             steps {
                 echo "Pushing the image to docker hub"
                 withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker tag django-todo-app:v1 ${env.dockerHubUser}/django-todo-app:v1"
+                sh "docker image tag django-todo-app:v1 ${env.dockerHubUser}/django-todo-app:v1"
                 sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                sh "docker push ${env.dockerHubUser}/django-todo-app:v1"
+                sh "docker image push ${env.dockerHubUser}/django-todo-app:v1"
                 sh "docker image rm django-todo-app:v1"
                 sh "docker image rm ${env.dockerHubUser}/django-todo-app:v1"
                 }
