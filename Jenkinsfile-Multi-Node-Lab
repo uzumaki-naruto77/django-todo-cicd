@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'dev-agent'}
+    agent {label 'dev'}
     stages{
         stage("Check which user is running this Job"){
             steps{
@@ -30,16 +30,16 @@ pipeline {
                 }
             }
         }
-        stage("Clone Code to Prd-Agent"){
-            agent {label 'prd-agent'}
+        stage("Clone Code to Production Server"){
+            agent {label 'prd'}
             steps {
                 sh 'whoami'
                 echo "Cloning the code"
                 git url:"https://github.com/ABHAY4321/django-todo-cicd.git", branch: "develop"
             }
         }
-        stage("Deploy"){
-            agent {label 'prd-agent'}
+        stage("App Deploy on Production Server"){
+            agent {label 'prd'}
             steps {
                 echo "Deploying the container on prod server"
                 withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
