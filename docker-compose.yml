@@ -4,7 +4,7 @@ services:
   #django_todo_app:
     container_name: "django_todo_app"
     #build: .
-    image: pinku9627/django-todo-app:v1
+    image: django-app:latest
     ports:
       - 8000:8000
     #volumes:                            # Note: If using persistent volume, any changes made in index.html will not relect even if using compose up or down. So first comment volume, then do the modification.
